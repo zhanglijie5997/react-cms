@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { HashRouter, Route, Router } from "react-router-dom";
 import App from './App';
+import { createBrowserHistory } from "history";
 import reportWebVitals from './reportWebVitals';
+import { Provider } from "react-redux";
+import configureStore from "./store/store";
+import Page from './Page';
+import Routers from "./router/Router";
+const store = configureStore(createBrowserHistory());
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </Provider>
+   ,
   document.getElementById('root')
 );
 
