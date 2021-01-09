@@ -1,4 +1,3 @@
-import { PublicType } from "@@/http/http";
 import { LoginType } from "@@/http/loginHttp/loginHttp";
 import { createAction } from "redux-actions"
 

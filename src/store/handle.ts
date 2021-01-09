@@ -31,8 +31,10 @@ const changeUserMsg = handleActions<changeUserMsgType>({
     }
 }, userMsg);
 
-export default {
+
+const Handle = {
     changeToken,
     changeRefreshToken,
     changeUserMsg
 }
+export default Handle;

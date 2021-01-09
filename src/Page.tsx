@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { HashRouter, Switch, Route } from "react-router-dom";
+import React from 'react';
+// import { useSelector } from 'react-redux';
+import { HashRouter, Switch, Route, RouteComponentProps } from 'react-router-dom';
 import { getRouterConfigPage } from './router/routes';
-import { UseSelectType } from './store/actions';
-const Page = (props: any) => {
-    const storeToken = useSelector((state: UseSelectType) => state.changeToken);
-    useEffect(() => {
-        console.log(props);
-    }, [storeToken, props.hidtory])
+// import { UseSelectType } from './store/actions';
+const Page = (props: RouteComponentProps) => {
     return (
         <HashRouter>
             <Switch>
-                <Route path="/index" exact={true}  component={getRouterConfigPage[0].components}>
+                <Route path="/index" exact={true} component={getRouterConfigPage[0].components}>
                     {/* <Switch>
                         <Route path="/role" exact={true}  component={getRouterConfigPage[2].components} />
                     </Switch> */}
@@ -20,6 +16,6 @@ const Page = (props: any) => {
             </Switch>
         </HashRouter>
     );
-}
+};
 
 export default Page;

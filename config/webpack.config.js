@@ -26,9 +26,10 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const postcssNormalize = require('postcss-normalize');
-
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+ 
 const appPackageJson = require(paths.appPackageJson);
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
@@ -167,7 +168,7 @@ module.exports = function (webpackEnv) {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry:
-      isEnvDevelopment && !shouldUseReactRefresh
+    isEnvDevelopment && !shouldUseReactRefresh
         ? [
             // Include an alternative client for WebpackDevServer. A client's job is to
             // connect to WebpackDevServer by a socket and get notified about changes.
@@ -181,6 +182,7 @@ module.exports = function (webpackEnv) {
             // require.resolve('webpack-dev-server/client') + '?/',
             // require.resolve('webpack/hot/dev-server'),
             //
+            isEnvDevelopment && 'react-hot-loader/patch',
             // When using the experimental react-refresh integration,
             // the webpack plugin takes care of injecting the dev client for us.
             webpackDevClientEntry,
@@ -323,6 +325,7 @@ module.exports = function (webpackEnv) {
         .filter(ext => useTypeScript || !ext.includes('ts')),
       alias: {
         // Support React Native Web
+        'react-dom': '@hot-loader/react-dom',
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
         // Allows for better profiling with ReactDevTools
@@ -398,6 +401,7 @@ module.exports = function (webpackEnv) {
                 ),
                 
                 plugins: [
+                  isEnvDevelopment && 'react-hot-loader/babel',
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {
@@ -595,6 +599,8 @@ module.exports = function (webpackEnv) {
       new webpack.DefinePlugin(env.stringified),
       // This is necessary to emit hot updates (CSS and Fast Refresh):
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+
+
       // Experimental hot reloading for React .
       // https://github.com/facebook/react/tree/master/packages/react-refresh
       isEnvDevelopment &&
@@ -614,6 +620,7 @@ module.exports = function (webpackEnv) {
       // a plugin that prints an error when you attempt to do this.
       // See https://github.com/facebook/create-react-app/issues/240
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
+
       // If you require a missing module and then `npm install` it, you still have
       // to restart the development server for webpack to discover it. This plugin
       // makes the discovery automatic so you don't have to restart.
@@ -715,6 +722,9 @@ module.exports = function (webpackEnv) {
           },
         },
       }),
+      isEnvDevelopment && new HardSourceWebpackPlugin(),
+      isEnvDevelopment && new ProgressBarPlugin(),
+
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell webpack to provide empty mocks for them so importing them works.

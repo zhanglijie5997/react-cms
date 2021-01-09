@@ -2,35 +2,33 @@ import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { login } from '@@/http/loginHttp/loginHttp';
-import { useDispatch } from 'react-redux';
-import { changeRefreshToken, changeToken, changeUserMsg } from "@@/store/actions";
-interface LoginFormType {
-    username: string;
-    password: string;
-    remember: boolean
-}
+// import { useDispatch } from 'react-redux';
+// import { changeRefreshToken, changeToken, changeUserMsg } from "@@/store/actions";
+// interface LoginFormType {
+//     username: string;
+//     password: string;
+//     remember: boolean
+// }
 
 const Login = (props: RouteComponentProps) => {
-
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     useEffect(() => {
         console.log(props);
-    }, [])
+    }, [props])
 
     const onFinish = async (e: any) => { 
-        if(!e) {
-            console.log(e);
-            return;
-        }
-        const data = e as LoginFormType;
-        const _ =  await login(data.username, data.password);
-        console.log(_);
-        dispatch(changeToken(_.data.token));
-        dispatch(changeRefreshToken(_.data.refreshToken));
-        dispatch(changeUserMsg({data: _.data}));
-        props.history.push("/");
+        // if(!e) {
+        //     console.log(e);
+        //     return;
+        // }
+        // const data = e as LoginFormType;
+        // const _ =  await login(data.username, data.password);
+        // console.log(_);
+        // dispatch(changeToken(_.data.token));
+        // dispatch(changeRefreshToken(_.data.refreshToken));
+        // dispatch(changeUserMsg({data: _.data}));
+        props.history.replace("/");
     }
     return (
         <div className="flexCenter" >
