@@ -1,4 +1,5 @@
-import React, { Component,  useRef, useState, useLayoutEffect } from 'react'
+import { useThrootle, useWindowSize } from '@@/utils/utils';
+import React, { Component,  useRef, useState, useLayoutEffect, useEffect } from 'react'
 import { createPortal } from 'react-dom';
 import {  RouteComponentProps } from 'react-router';
 
@@ -16,20 +17,24 @@ class Test extends Component {
     }
 }
 
-class XSearch extends HTMLElement {
-    
-}
 
-customElements.define('x-search', XSearch);
+
 const Index = (props: RouteComponentProps) => {
     const three = useRef<HTMLDivElement>(null);
     const [getV, setV] = useState<boolean>();
+    const scroll = useThrootle(function() {
+        console.log(`jieliu`);
+    }, 2000) ;
+    const { x, y } = useWindowSize();
+    useEffect(() => {
+        initDom();
+        window.addEventListener("scroll", scroll);
+        return () => window.removeEventListener("scroll", scroll);
+    }, [scroll])
 
-    useLayoutEffect(() => {
-        initDom()
-        console.log(123);
-    }, [])
-
+    useEffect(() => {
+        console.log(x, y);
+    }, [x, y])
 
     const initDom = async () => {
         if( window.Notification) {
@@ -50,7 +55,9 @@ const Index = (props: RouteComponentProps) => {
     return (
         <div className="three" ref={three} onClick={() =>creates()}>
             {/* @ts-ignore */}
-            { getV ? <Test><x-search>123</x-search> </Test> : null}
+            {/* { getV ? <Test><x-search>123</x-search> </Test> : null} */}
+
+            
             {/* {
             getRouterConfigPage.map((item: RouteConfigType, index: number) => {
                 return <Route path={item.path} exact={item.excat} key={index} render={(itemProps: RouteComponentProps) => {
@@ -64,7 +71,10 @@ const Index = (props: RouteComponentProps) => {
             })
           } */}
 
-          123jjjjfff
+            123jjjjfff
+            {
+                new Array(100).fill(0).map((_, i: number) => <div key={i} style={{ height: '200px' }}>{ i }</div>)
+            }
         </div>
     )
 }

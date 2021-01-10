@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { useDebounce } from '@@/utils/utils';
 // import { useDispatch } from 'react-redux';
 // import { changeRefreshToken, changeToken, changeUserMsg } from "@@/store/actions";
 // interface LoginFormType {
@@ -17,7 +18,7 @@ const Login = (props: RouteComponentProps) => {
         console.log(props);
     }, [props])
 
-    const onFinish = async (e: any) => { 
+    const onFinish = useDebounce(async (e: any) => { 
         // if(!e) {
         //     console.log(e);
         //     return;
@@ -29,7 +30,7 @@ const Login = (props: RouteComponentProps) => {
         // dispatch(changeRefreshToken(_.data.refreshToken));
         // dispatch(changeUserMsg({data: _.data}));
         props.history.replace("/");
-    }
+    }, 1000);
     return (
         <div className="flexCenter" >
             <Card title="欢迎登录速百读管理后台" className=" boxShow" style={{ width: "300px", height: "300px", textAlign: "center" }}>
